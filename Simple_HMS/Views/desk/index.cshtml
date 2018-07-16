@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Choose the operation you wish to perform</h2>
+
+@Html.Partial("_alerts")
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+<div class="container">
+    <div class="col-md-6">
+        @using (Html.BeginForm("search", "desk", null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                    <input class="form-control" placeholder="Patiens Regno" name="regno" id="regno" required />
+                </div>
+            </div>
+
+            <div>
+                <input type="submit" value="Submit" class="btn btn-sm btn-primary btn-block" />
+            </div>
+        }
+    </div>
+    <div class="col-md-6">
+        @using (Html.BeginForm("advance-search", "desk", null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <b>You can enter part or the patients full name</b>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                    <input class="form-control" placeholder="Patiens Name" name="search_term" id="search_term" required />
+                </div>
+            </div>
+
+            <div>
+                <input type="submit" value="Submit" class="btn btn-sm btn-primary btn-block" />
+            </div>
+        }
+    </div>
+</div>
+
