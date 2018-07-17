@@ -1,0 +1,104 @@
+﻿@using Simple_HMS.Entity;
+@model RecordSummary
+
+@{
+    ViewBag.Title = "Record Summary";
+}
+
+@Html.Partial("_alerts")
+
+<h2>Medical Record Summary</h2>
+
+<div>
+    <h4>Patients</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName("Patients Regno")
+        </dt>
+
+        <dd>
+            @Model.patients_regno
+        </dd>
+
+        <dt>
+            @Html.DisplayName("First Name")
+        </dt>
+
+        <dd>
+            @Model.first_name
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Last Name")
+        </dt>
+
+        <dd>
+            @Model.last_name
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <h4>Record Summary</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.patients_regno)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.patients_regno)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.total)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.total)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.start_date)
+        </dt>
+
+        <dd>
+            @if (Model.start_date != null)
+            {
+                @Model.start_date.Value.ToLongDateString()
+            }
+            else
+            {
+                @:Null
+            }
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.end_date)
+        </dt>
+
+        <dd>
+            @if (Model.end_date != null)
+            {
+                @Model.end_date.Value.ToLongDateString()
+            }
+            else
+            {
+                @:Null
+            }
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Number of paid Visit")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.count)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,101 @@
+﻿@using Simple_HMS.Entity;
+@model Patients
+
+@{
+    ViewBag.Title = "patients";
+    RecordSummary recordSummary = (RecordSummary)ViewBag.records;
+}
+@Html.Partial("_alerts")
+
+<h2>patients</h2>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.patients_regno)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.patients_regno)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.first_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.first_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.last_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.last_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dob)
+        </dt>
+
+        <dd>
+            @Model.dob.ToLongDateString()
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.reg_date)
+        </dt>
+
+        <dd>
+            @Model.reg_date.ToLongDateString()
+        </dd>
+
+    </dl>
+</div>
+
+<h3>All Time medical Summary</h3>
+<div>
+    <dl class="dl-horizontal">
+        <dt>@Html.DisplayName("Total")</dt>
+        <dd>@recordSummary.total</dd>
+        <dt>@Html.DisplayName("Number of paid Visit")</dt>
+        <dd>@recordSummary.count</dd>
+    </dl>
+</div>
+
+<h3>Enter Date Range</h3>
+@using (Html.BeginForm("med-rec-summary", "desk", null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <input name="regno" id="regno" value="@Model.patients_regno" type="hidden" />
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <label class="control-label col-md-2" for="start_date">Start Date</label>
+            <div class="col-md-10">
+                <input name="start_date" type="date" id="start_date" required class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="start_date">End Date</label>
+            <div class="col-md-10">
+                <input name="end_date" type="date" id="end_date" required class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Submit" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
+}
+
+<p>
+    <a href="@Url.Action("add-med-record", new {regno = Model.patients_regno })" class="btn btn-primary">Add Medicals Summary</a>
+    @Html.ActionLink("Back to Desk", "index")
+</p>

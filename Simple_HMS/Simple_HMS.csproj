@@ -217,6 +217,10 @@
     <Content Include="Views\desk\index.cshtml" />
     <Content Include="Views\Shared\_alerts.cshtml" />
     <Content Include="Views\desk\search.cshtml" />
+    <Content Include="Views\desk\patients.cshtml" />
+    <Content Include="Views\desk\AddPatients.cshtml" />
+    <Content Include="Views\desk\AddMedRecord.cshtml" />
+    <Content Include="Views\desk\MedRecSummary.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

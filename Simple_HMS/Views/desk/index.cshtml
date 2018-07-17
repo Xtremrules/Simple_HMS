@@ -9,38 +9,50 @@
 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 <div class="container">
-    <div class="col-md-6">
-        @using (Html.BeginForm("search", "desk", null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-        {
-            @Html.AntiForgeryToken()
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                    <input class="form-control" placeholder="Patiens Regno" name="regno" id="regno" required />
+    <div class="row">
+        <div class="col-md-6">
+            @using (Html.BeginForm("search", "desk", null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                        <input class="form-control" placeholder="Patiens Regno" name="regno" id="regno" required />
+                    </div>
                 </div>
-            </div>
 
-            <div>
-                <input type="submit" value="Submit" class="btn btn-sm btn-primary btn-block" />
-            </div>
-        }
+                <div>
+                    <input type="submit" value="Submit" class="btn btn-sm btn-primary btn-block" />
+                </div>
+            }
+        </div>
+        <div class="col-md-6">
+            @using (Html.BeginForm("advance-search", "desk", null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <b>You can enter part or the patients full name</b>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                        <input class="form-control" placeholder="Patiens Name" name="search_term" id="search_term" required />
+                    </div>
+                </div>
+
+                <div>
+                    <input type="submit" value="Submit" class="btn btn-sm btn-primary btn-block" />
+                </div>
+            }
+        </div>
     </div>
-    <div class="col-md-6">
-        @using (Html.BeginForm("advance-search", "desk", null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-        {
-            @Html.AntiForgeryToken()
-            <b>You can enter part or the patients full name</b>
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                    <input class="form-control" placeholder="Patiens Name" name="search_term" id="search_term" required />
-                </div>
-            </div>
 
-            <div>
-                <input type="submit" value="Submit" class="btn btn-sm btn-primary btn-block" />
-            </div>
-        }
+    <div class="row">
+        <div class="col-md-4">
+            <a href="@Url.Action("add-patients")" class="btn btn-primary">Add Patients</a>
+        </div>
+        <div class="col-md-4">
+            <a href="@Url.Action("add-med-record")" class="btn btn-primary">Register Medical</a>
+        </div>
+        <div class="col-md-4"></div>
     </div>
 </div>
 

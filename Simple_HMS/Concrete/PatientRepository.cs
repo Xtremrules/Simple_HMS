@@ -125,8 +125,8 @@ namespace Simple_HMS.Concrete
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@patient_regno", regno);
-                cmd.Parameters.AddWithValue("@start_date", start_date ?? "");
-                cmd.Parameters.AddWithValue("@end_date", end_date ?? "");
+                cmd.Parameters.AddWithValue("@start_date", start_date);
+                cmd.Parameters.AddWithValue("@end_date", end_date);
 
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -134,11 +134,12 @@ namespace Simple_HMS.Concrete
                 while (reader.Read())
                 {
                     recordSum.total = Convert.ToDecimal(reader["Total"]);
-                    //recordSum.start_date = reader["start_date"] != null ? Convert.IsDBNull // != null ? Convert.ToDateTime(reader["start_date"]) : null;
-                    recordSum.start_date = Convert.IsDBNull(reader["start_date"]) ? default(DateTime) : Convert.ToDateTime(reader["start_date"]);
-                    recordSum.end_date = Convert.ToDateTime(reader["end_date"]);
+                    recordSum.end_date = reader["end_date"].ToString() == "" ? (DateTime?)null : Convert.ToDateTime(reader["end_date"].ToString());
+                    recordSum.start_date = reader["start_date"].ToString() == "" ? (DateTime?)null : Convert.ToDateTime(reader["start_date"].ToString());
                     recordSum.count = Convert.ToInt32(reader["count"]);
                     recordSum.patients_regno = reader["patients_regno"].ToString();
+                    recordSum.last_name = reader["last_name"].ToString();
+                    recordSum.first_name = reader["first_name"].ToString();
                 }
                 conn.Close();
             }
@@ -202,8 +203,11 @@ namespace Simple_HMS.Concrete
                 SqlCommand cmd = new SqlCommand("searchPatient", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.AddWithValue("@term_1", term_1 ?? "");
-                cmd.Parameters.AddWithValue("@term_2", term_2 ?? "");
+                cmd.Parameters.AddWithValue("@term_1", term_1);
+                if (term_2 == null || string.IsNullOrEmpty(term_2))
+                    cmd.Parameters.AddWithValue("@term_2", DBNull.Value);
+                else
+                    cmd.Parameters.AddWithValue("@term_2", term_2);
 
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();

@@ -37,7 +37,10 @@ namespace Simple_HMS.Controllers
             else
             {
                 if (patients.Count() == 1)
+                {
+                    ViewBag.records = _repository.GetMedRecordSummaryRange(regno, null, null);
                     return View(nameof(patients), patients.FirstOrDefault());
+                }
                 return View(patients);
             }
         }
@@ -45,9 +48,14 @@ namespace Simple_HMS.Controllers
         [HttpPost, ActionName("advance-search")]
         public ActionResult AdvanceSearch(string search_term)
         {
-            ViewBag.search_term = search_term;
+            IEnumerable<IPatient> patients;
+
+            ViewBag.regno = search_term;
             var terms = search_term.Split(new char[] { ' ' }, 2);
-            var patients = _repository.SearchPatient(terms[0], terms[1]);
+            if (terms.Length == 2)
+                patients = _repository.SearchPatient(terms[0], terms[1]);
+            else
+                patients = _repository.SearchPatient(search_term, null);
 
             if (patients?.Count() == 0)
             {
@@ -56,7 +64,7 @@ namespace Simple_HMS.Controllers
             }
             else
             {
-                return View("AdvanceSearch", patients);
+                return View("search", patients);
             }
         }
 
@@ -65,13 +73,15 @@ namespace Simple_HMS.Controllers
             var patients = _repository.GetPatient(regno).FirstOrDefault();
             if (patients == null)
                 return RedirectToAction("index");
-            ViewBag.records = _repository.GetMedRecordSummaryRange(regno, "", "");
+            ViewBag.records = _repository.GetMedRecordSummaryRange(regno, null, null);
             return View(patients);
         }
 
+        [ActionName("add-patients")]
         public ActionResult AddPatients()
         {
-            return View(new Patients());
+            var RegNo = "NHMS" + _repository.GetPatientCount().Value.ToString();
+            return View("AddPatients", new Patients() { patients_regno = RegNo });
         }
 
         [HttpPost, ActionName("add-patients")]
@@ -85,12 +95,9 @@ namespace Simple_HMS.Controllers
 
             try
             {
-                var RegNo = "SHMS" + _repository.GetPatientCount().Value.ToString();
-                model.patients_regno = RegNo;
                 _repository.AddPatient(model);
-
-                TempData["success"] = $"Patients created success fully. Regno: {RegNo}";
-                return RedirectToAction(nameof(patients), new { regno = RegNo });
+                TempData["success"] = $"Patients created success fully. Regno: {model.patients_regno}";
+                return RedirectToAction(nameof(patients), new { regno = model.patients_regno });
             }
             catch (Exception ex)
             {
@@ -100,6 +107,7 @@ namespace Simple_HMS.Controllers
             return View("AddPatients", model);
         }
 
+        [ActionName("add-med-record")]
         public ActionResult AddMedRecord(string regno)
         {
             if(string.IsNullOrWhiteSpace(regno))
@@ -114,17 +122,39 @@ namespace Simple_HMS.Controllers
                 TempData["error"] = "Patient not found";
                 return RedirectToAction("index");
             }
-
-            return View(nameof(AddMedRecord), patients);
+            ViewBag.patients = patients;
+            return View(nameof(AddMedRecord), new MedRecords { patients_regno = patients.patients_regno});
         }
 
-        [ActionName("med-rec-summary")]
+        [ActionName("add-med-record"), HttpPost]
+        public ActionResult AddMedRecord(MedRecords model)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Data not valid");
+                return View(nameof(AddMedRecord), model);
+            }
+
+            try
+            {
+                _repository.AddMedRecord(model);
+                TempData["success"] = "Record added successfully";
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                return View(nameof(AddMedRecord), model);
+            }
+            return RedirectToAction("patients", new { regno = model.patients_regno });
+        }
+
+        [ActionName("med-rec-summary"), HttpPost]
         public ActionResult MedRecSummary(string regno, DateTime start_date, DateTime end_date)
         {
             if (string.IsNullOrEmpty(regno))
                 return RedirectToAction("index");
-            var summary = _repository.GetMedRecordSummaryRange(regno, start_date.Date.ToString(), end_date.Date.ToString());
-            if(summary == null)
+            var summary = _repository.GetMedRecordSummaryRange(regno, start_date.ToString("yyyy-MM-dd"), end_date.ToString("yyyy-MM-dd"));
+            if (summary == null)
             {
                 TempData["error"] = "Summary not found";
                 return RedirectToAction("index");
