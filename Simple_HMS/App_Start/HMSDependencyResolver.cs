@@ -23,7 +23,7 @@ namespace Simple_HMS
 
         private static IContainer RegisterServices(ContainerBuilder builder)
         {
-            var connString = Properties.Settings.Default.connstring;
+            var connString = ConfigurationManager.ConnectionStrings["connstring"].ConnectionString;
 
             builder.RegisterControllers(typeof(MvcApplication).Assembly).PropertiesAutowired();
 
