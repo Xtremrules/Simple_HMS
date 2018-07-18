@@ -20,8 +20,10 @@ namespace Simple_HMS.Concrete
         {
             using (SqlConnection conn = new SqlConnection(_connString))
             {
-                SqlCommand cmd = new SqlCommand("AddMed_records", conn);
-                cmd.CommandType = CommandType.StoredProcedure;
+                SqlCommand cmd = new SqlCommand("AddMed_records", conn)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
 
                 cmd.Parameters.AddWithValue("@patients_regno", medRecord.patients_regno);
                 cmd.Parameters.AddWithValue("@amount", medRecord.amount);
@@ -37,8 +39,10 @@ namespace Simple_HMS.Concrete
         {
             using (SqlConnection conn = new SqlConnection(_connString))
             {
-                SqlCommand cmd = new SqlCommand("AddPatient", conn);
-                cmd.CommandType = CommandType.StoredProcedure;
+                SqlCommand cmd = new SqlCommand("AddPatient", conn)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
 
                 cmd.Parameters.AddWithValue("@patients_regno", patient.patients_regno);
                 cmd.Parameters.AddWithValue("@first_name", patient.first_name);
@@ -57,8 +61,10 @@ namespace Simple_HMS.Concrete
 
             using (SqlConnection conn = new SqlConnection(_connString))
             {
-                SqlCommand cmd = new SqlCommand("getPatientsAllMedRecord", conn);
-                cmd.CommandType = CommandType.StoredProcedure;
+                SqlCommand cmd = new SqlCommand("getPatientsAllMedRecord", conn)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
 
                 cmd.Parameters.AddWithValue("@patients_regno", regno);
 
@@ -67,13 +73,14 @@ namespace Simple_HMS.Concrete
 
                 while (reader.Read())
                 {
-                    IMedRecords record = new MedRecords();
-
-                    record.Id = Convert.ToInt32(reader["Id"]);
-                    record.entry_date = Convert.ToDateTime(reader["entry_date"]);
-                    record.amount = Convert.ToDecimal(reader["amount"]);
-                    record.patients_regno = reader["patients_regno"].ToString();
-                    record.treatment = reader["treatment"].ToString();
+                    IMedRecords record = new MedRecords
+                    {
+                        Id = Convert.ToInt32(reader["Id"]),
+                        entry_date = Convert.ToDateTime(reader["entry_date"]),
+                        amount = Convert.ToDecimal(reader["amount"]),
+                        patients_regno = reader["patients_regno"].ToString(),
+                        treatment = reader["treatment"].ToString()
+                    };
 
                     records.Add(record);
                 }
@@ -88,8 +95,10 @@ namespace Simple_HMS.Concrete
 
             using (SqlConnection conn = new SqlConnection(_connString))
             {
-                SqlCommand cmd = new SqlCommand("getPatientsMedRecordsByRange", conn);
-                cmd.CommandType = CommandType.StoredProcedure;
+                SqlCommand cmd = new SqlCommand("getPatientsMedRecordsByRange", conn)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
 
                 cmd.Parameters.AddWithValue("@patient_regno", regno);
                 cmd.Parameters.AddWithValue("@start_date", start_date ?? "");
@@ -100,13 +109,14 @@ namespace Simple_HMS.Concrete
 
                 while (reader.Read())
                 {
-                    IMedRecords record = new MedRecords();
-
-                    record.Id = Convert.ToInt32(reader["Id"]);
-                    record.entry_date = Convert.ToDateTime(reader["entry_date"]);
-                    record.amount = Convert.ToDecimal(reader["amount"]);
-                    record.patients_regno = reader["patients_regno"].ToString();
-                    record.treatment = reader["treatment"].ToString();
+                    IMedRecords record = new MedRecords
+                    {
+                        Id = Convert.ToInt32(reader["Id"]),
+                        entry_date = Convert.ToDateTime(reader["entry_date"]),
+                        amount = Convert.ToDecimal(reader["amount"]),
+                        patients_regno = reader["patients_regno"].ToString(),
+                        treatment = reader["treatment"].ToString()
+                    };
 
                     records.Add(record);
                 }
@@ -121,8 +131,10 @@ namespace Simple_HMS.Concrete
 
             using (SqlConnection conn = new SqlConnection(_connString))
             {
-                SqlCommand cmd = new SqlCommand("getPatientsRecordSummaryByRange", conn);
-                cmd.CommandType = CommandType.StoredProcedure;
+                SqlCommand cmd = new SqlCommand("getPatientsRecordSummaryByRange", conn)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
 
                 cmd.Parameters.AddWithValue("@patient_regno", regno);
                 cmd.Parameters.AddWithValue("@start_date", start_date);
@@ -152,8 +164,10 @@ namespace Simple_HMS.Concrete
 
             using (SqlConnection conn = new SqlConnection(_connString))
             {
-                SqlCommand cmd = new SqlCommand("getPatientsByRegno", conn);
-                cmd.CommandType = CommandType.StoredProcedure;
+                SqlCommand cmd = new SqlCommand("getPatientsByRegno", conn)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
 
                 cmd.Parameters.AddWithValue("@patient_regno", regno);
 
@@ -162,13 +176,14 @@ namespace Simple_HMS.Concrete
 
                 while (reader.Read())
                 {
-                    IPatient patient = new Patients();
-
-                    patient.first_name = reader["first_name"].ToString();
-                    patient.last_name = reader["last_name"].ToString();
-                    patient.dob = Convert.ToDateTime(reader["dob"]);
-                    patient.patients_regno = reader["patients_regno"].ToString();
-                    patient.reg_date = Convert.ToDateTime(reader["reg_date"]);
+                    IPatient patient = new Patients
+                    {
+                        first_name = reader["first_name"].ToString(),
+                        last_name = reader["last_name"].ToString(),
+                        dob = Convert.ToDateTime(reader["dob"]),
+                        patients_regno = reader["patients_regno"].ToString(),
+                        reg_date = Convert.ToDateTime(reader["reg_date"])
+                    };
 
                     patients.Add(patient);
                 }
@@ -200,8 +215,10 @@ namespace Simple_HMS.Concrete
 
             using (SqlConnection conn = new SqlConnection(_connString))
             {
-                SqlCommand cmd = new SqlCommand("searchPatient", conn);
-                cmd.CommandType = CommandType.StoredProcedure;
+                SqlCommand cmd = new SqlCommand("searchPatient", conn)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
 
                 cmd.Parameters.AddWithValue("@term_1", term_1);
                 if (term_2 == null || string.IsNullOrEmpty(term_2))
@@ -214,13 +231,14 @@ namespace Simple_HMS.Concrete
 
                 while (reader.Read())
                 {
-                    IPatient patient = new Patients();
-
-                    patient.first_name = reader["first_name"].ToString();
-                    patient.last_name = reader["last_name"].ToString();
-                    patient.dob = Convert.ToDateTime(reader["dob"]);
-                    patient.patients_regno = reader["patients_regno"].ToString();
-                    patient.reg_date = Convert.ToDateTime(reader["reg_date"]);
+                    IPatient patient = new Patients
+                    {
+                        first_name = reader["first_name"].ToString(),
+                        last_name = reader["last_name"].ToString(),
+                        dob = Convert.ToDateTime(reader["dob"]),
+                        patients_regno = reader["patients_regno"].ToString(),
+                        reg_date = Convert.ToDateTime(reader["reg_date"])
+                    };
 
                     patients.Add(patient);
                 }

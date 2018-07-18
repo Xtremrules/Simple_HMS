@@ -5,14 +5,41 @@
 <div class="jumbotron">
     <h1>St Nicholas Hospital Management System</h1>
     <p class="lead">This is a Simple Hospital Management System (HMS) developed with ASP.NET MVC 5</p>
-    <p><a href="@Url.Action("index", "desk")" class="btn btn-primary btn-lg">Start</a></p>
+    <p>Login to start</p>
 </div>
 
 <div class="row">
     <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            Click on the Desk button to start
-        </p>
+        <h2>Login</h2>
+        @using (Html.BeginForm("login", "home", null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.Partial("_alerts")
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                <label class="control-label col-md-4" for="username">username</label>
+                <div class="col-md-8">
+                    <input name="username" type="text" id="username" required class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4" for="Password">Password</label>
+                <div class="col-md-8">
+                    <input name="password" type="password" id="password" required class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Submit" class="btn btn-default" />
+                </div>
+            </div>
+
+        </div>
+        }
+
     </div>
 </div>

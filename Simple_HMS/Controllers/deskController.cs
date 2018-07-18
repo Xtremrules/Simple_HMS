@@ -5,14 +5,16 @@ using System.Web;
 using Simple_HMS.Interface;
 using System.Web.Mvc;
 using Simple_HMS.Entity;
+using System.Web.Routing;
 
 namespace Simple_HMS.Controllers
 {
-    public class deskController : Controller
+    [Authorize]
+    public class DeskController : Controller
     {
         private readonly IPatientRepository _repository;
 
-        public deskController(IPatientRepository repository)
+        public DeskController(IPatientRepository repository)
         {
             _repository = repository;
         }
@@ -51,7 +53,7 @@ namespace Simple_HMS.Controllers
             IEnumerable<IPatient> patients;
 
             ViewBag.regno = search_term;
-            var terms = search_term.Split(new char[] { ' ' }, 2);
+            var terms = search_term.Trim().Split(new char[] { ' ' }, 2);
             if (terms.Length == 2)
                 patients = _repository.SearchPatient(terms[0], terms[1]);
             else

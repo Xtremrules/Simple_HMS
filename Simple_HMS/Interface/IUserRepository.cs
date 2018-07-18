@@ -8,6 +8,6 @@ namespace Simple_HMS.Interface
 {
     public interface IUserRepository
     {
-        IUser LoginUser(string username, string password);
+        IUser GetUser(string username);
     }
 }

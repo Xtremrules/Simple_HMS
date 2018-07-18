@@ -172,6 +172,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Security\HMSIdentity.cs" />
+    <Compile Include="Security\HMSPrincipal.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -221,6 +223,7 @@
     <Content Include="Views\desk\AddPatients.cshtml" />
     <Content Include="Views\desk\AddMedRecord.cshtml" />
     <Content Include="Views\desk\MedRecSummary.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

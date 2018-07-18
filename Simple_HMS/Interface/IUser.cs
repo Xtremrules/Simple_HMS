@@ -5,5 +5,6 @@
         int Id { get; set; }
         string Name { get; set; }
         string Role { get; set; }
+        string passwordHash { get; set; }
     }
 }
